@@ -1,0 +1,5 @@
+{
+  "URL_SERVEUR": "http://localhost:5000",
+  "URL_AUTH": "/login",
+  "SECRET_KEY": "58bff059-1c03-4a3f-bff0-591c03ba3fc5"
+}
