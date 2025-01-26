@@ -85,3 +85,23 @@
 .register-link p a:hover {
     text-decoration: underline;
 }
+
+.error-message {
+    color: #E63946;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.input-error {
+    border: 2px solid #E63946 !important;
+    outline: none;
+}
+
+.input-box-error {
+    margin-top: 65px !important;
+}
+
+.button-error {
+    margin-top: 35px !important;
+}

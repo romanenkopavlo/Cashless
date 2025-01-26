@@ -9,5 +9,5 @@ export const encryptData = (data:string):string => {
 
 export const decryptData = (cipherText: string): string => {
     const bytes = CryptoJS.AES.decrypt(cipherText, SECRET_KEY)
-    return bytes.toString()
+    return bytes.toString(CryptoJS.enc.Utf8)
 }

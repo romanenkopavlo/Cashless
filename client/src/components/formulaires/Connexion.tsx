@@ -17,6 +17,7 @@ interface FormData {
 export const Connexion = () => {
     const [message, setMessage] = useState<string>('Connexion...')
     const {register, handleSubmit, formState:{errors}} = useForm<FormData>();
+    const [errorMessage, setErrorMessage] = useState<string>('');
     const navigate = useNavigate()
     const {setToken} = useAuthenticationJWTStore()
 
@@ -26,8 +27,13 @@ export const Connexion = () => {
                 if (token != null) {
                     console.log(token)
                     setToken(token)
-                    navigate('/profile')
+                    navigate('/profile');
                 }
+            })
+            .catch (error => {
+                console.log(error)
+                console.log(error.message)
+                setErrorMessage(error.message)
             })
         console.log(data)
     }
@@ -39,7 +45,7 @@ export const Connexion = () => {
                     if(state) {
                         setMessage(`⚙️ Serveur distant fonctionnel`)
                     } else {
-                        setMessage(`⛓️‍💥 Le serveur distant ne répond pas.Veuillez vous reconnecter plus tard!`)
+                        setMessage(`⛓️‍💥 Le serveur distant ne répond pas. Veuillez vous reconnecter plus tard!`)
                     }
                 })
         }, 3500)
@@ -64,16 +70,24 @@ export const Connexion = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <h1>Login</h1>
                         <div className="input-box">
-                            <input {...register("password", ValidationConnexion.password)} type="text" placeholder="Pseudo" required/>
+                            <input {...register("login", ValidationConnexion.login)} type="text" className={errors.login ? "input-error" : ""} placeholder="Pseudo" required/>
                             <FaUser className="icon"/>
+                            {errors.login && <p className="error-message">{errors.login.message}</p>}
                         </div>
-                        <div className="input-box">
-                            <input {...register("login", ValidationConnexion.login)} type="text" placeholder="Mot de passe" required/>
+                        <div className={`input-box ${errors.login ? "input-box-error" : ""}`}>
+                            <input {...register("password", ValidationConnexion.password)} type="password" className={errors.password ? "input-error" : ""} placeholder="Mot de passe" required/>
                             <FaLock className="icon"/>
+                            {errors.password && <p className="error-message">{errors.password.message}</p>}
                         </div>
-
-                        <button type="submit">Login</button>
-
+                        <button type="submit" className={errors.password ? "button-error" : ""}>Login</button>
+                        {errorMessage && <Container maxWidth="sm" sx={{mt: 3}}>
+                            <Typography
+                                sx={{fontWeight: 'bold', textAlign: 'center'}}
+                                color={'error'}
+                            >
+                                {errorMessage}
+                            </Typography>
+                        </Container>}
                         <div className="register-link">
                             <p>Vous n'avez pas encore de compte? <a href="#">S'inscrire</a></p>
                         </div>

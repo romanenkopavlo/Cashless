@@ -1,21 +1,23 @@
 import {create} from "zustand"
-import ModToken from "../models/users/ModToken.ts";
 import {persist} from "zustand/middleware";
 import {encryptData} from "../outils/CryptoLocalStorage.ts";
+import ModToken from "../models/users/ModToken.ts";
 
 interface InterfaceTokenStore {
-    token: ModToken | null
+    token: string | null
     setToken: (newToken: ModToken) => void
 }
 
 export const useAuthenticationJWTStore = create<InterfaceTokenStore>()(
-    persist((set) => ({
+    persist(
+        (set) => ({
         token: null,
-        setToken: (newToken) => set({
-            token: newToken
-        })
-    }), {name: "token-store",
-        partialize:(state) => ({
-            token:encryptData(JSON.stringify(state.token))
-        })}
+        setToken: (newToken) => {
+            const encryptedToken = encryptData(JSON.stringify(newToken));
+            set({ token: encryptedToken });
+        },
+    }),
+    {
+      name: "token-store",
+    }
 ))
