@@ -26,7 +26,7 @@ export const PrivateRoute = () => {
         if (token) {
             const decryptedToken = decryptData(token);
             const parsedDecryptedToken = JSON.parse(decryptedToken);
-            const jwtToken = parsedDecryptedToken.token;
+            const jwtToken = parsedDecryptedToken.accessToken;
 
             const expirationTime = getTokenExpirationTime(jwtToken);
             if (expirationTime) {

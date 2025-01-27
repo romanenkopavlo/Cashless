@@ -1,15 +1,46 @@
-import {generateToken} from '../utils/jwtUtil.js';
+import {generateTokens} from '../utils/jwtUtil.js';
 import User from '../models/user.js';
+import jwt from "jsonwebtoken";
+
+const users = [];
 
 export const login = async (req, res) => {
     const {username, password} = req.body;
 
-    if (username !== "admin" || password !== "Admin853!?") {
+    if (username === "admin" && password === "Admin853!?") {
+        const user = new User(1, username, password, "admin");
+
+        const tokens = generateTokens(user);
+        user.createRefreshToken(tokens.refreshToken);
+        users.push(user)
+
+        res.cookie('refreshToken', tokens.refreshToken, {
+            httpOnly: true,
+            secure: true,
+        })
+
+        res.json({accessToken: tokens.accessToken});
+    } else {
         return res.status(401).json({message: 'Invalid credentials'});
     }
+}
 
-    const user = new User(1, username, password, "admin");
+export const getNewAccessToken = async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
 
-    const token = generateToken(user);
-    res.json({token});
+    if (!refreshToken) {
+        return res.status(400).json({message: 'Refresh token is required'});
+    }
+
+    if (!users.find(user => user.refreshToken === refreshToken)) {
+        return res.status(403).json({error: 'Invalid refresh token'});
+    }
+
+    try {
+        const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        const newAccessToken = jwt.sign({id: payload.id, username: payload.username, role: payload.role}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.ACCESS_TOKEN_EXPIRATION})
+        res.json({accessToken: newAccessToken});
+    } catch (error) {
+        res.status(403).json({error: 'Invalid or expired refresh token'});
+    }
 }

@@ -17,11 +17,18 @@ export const Header = () => {
                             <li><Link to="/contact" className="nav-link">Contact</Link></li>
                         </ul>
                     </nav>
-                    <Link to="/login">
-                        <Button color="inherit" className="cta-button">
-                            Se connecter
-                        </Button>
-                    </Link>
+                    <div className="header-buttons">
+                        <Link to="/login">
+                            <Button color="inherit" className="cta-button">
+                                Se connecter
+                            </Button>
+                        </Link>
+                        <Link to="/signup">
+                            <Button color="inherit" className="cta-button">
+                                S'inscrire
+                            </Button>
+                        </Link>
+                    </div>
                 </Container>
             </Toolbar>
         </AppBar>
