@@ -14,10 +14,14 @@ export const login = async (req, res) => {
         user.createRefreshToken(tokens.refreshToken);
         users.push(user)
 
+        console.log(tokens.refreshToken);
+
         res.cookie('refreshToken', tokens.refreshToken, {
             httpOnly: true,
-            secure: true,
+            secure: process.env.NODE_ENV === 'production'
         })
+
+        console.log(res.getHeaders());
 
         res.json({accessToken: tokens.accessToken});
     } else {
@@ -29,6 +33,7 @@ export const getNewAccessToken = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
+        console.log(refreshToken);
         return res.status(400).json({message: 'Refresh token is required'});
     }
 

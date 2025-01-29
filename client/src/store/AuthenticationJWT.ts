@@ -5,7 +5,7 @@ import ModToken from "../models/users/ModToken.ts";
 
 interface InterfaceTokenStore {
     token: string | null
-    setToken: (newToken: ModToken) => void
+    setToken: (newToken: ModToken | null) => void
 }
 
 export const useAuthenticationJWTStore = create<InterfaceTokenStore>()(

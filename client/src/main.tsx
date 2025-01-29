@@ -6,8 +6,9 @@ import {Home} from "./pages/Home.tsx";
 import {App} from "./App.tsx";
 import {UserLogin} from "./pages/User-login.tsx";
 import {Profile} from "./pages/Profile.tsx";
-import {SignUp} from "./pages/SignUp.tsx";
+import {Signup} from "./pages/Signup.tsx";
 import {PrivateRoute} from "./outils/PrivateRoute.tsx";
+import {Logout} from "./pages/Logout.tsx";
 
 const router = createBrowserRouter(([
     {
@@ -16,7 +17,8 @@ const router = createBrowserRouter(([
         children: [
             {path: "/", element: <Home/>},
             {path: "/login", element: <UserLogin/>},
-            {path: "/signup", element: <SignUp/>},
+            {path: "/signup", element: <Signup/>},
+            {path: "/logout", element: <Logout/>},
             {
                 path: "/profile",
                 element: <PrivateRoute/>,

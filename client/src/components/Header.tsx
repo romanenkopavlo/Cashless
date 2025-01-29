@@ -1,8 +1,10 @@
 import {AppBar, Button, Container, Toolbar, Typography} from "@mui/material";
 import {Link} from "react-router";
 import './Header.css';
+// import {useAuthenticationJWTStore} from "../store/AuthenticationJWT.ts";
 
 export const Header = () => {
+    // const {token} = useAuthenticationJWTStore()
     return (
         <AppBar position="sticky" className="header">
             <Toolbar>
@@ -17,18 +19,23 @@ export const Header = () => {
                             <li><Link to="/contact" className="nav-link">Contact</Link></li>
                         </ul>
                     </nav>
-                    <div className="header-buttons">
-                        <Link to="/login">
+                        <Link to ="/logout">
                             <Button color="inherit" className="cta-button">
-                                Se connecter
+                                Déconnexion
                             </Button>
                         </Link>
-                        <Link to="/signup">
-                            <Button color="inherit" className="cta-button">
-                                S'inscrire
-                            </Button>
-                        </Link>
-                    </div>
+                        <div className="header-buttons">
+                            <Link to="/login">
+                                <Button color="inherit" className="cta-button">
+                                    Se connecter
+                                </Button>
+                            </Link>
+                            <Link to="/signup">
+                                <Button color="inherit" className="cta-button">
+                                    S'inscrire
+                                </Button>
+                            </Link>
+                        </div>
                 </Container>
             </Toolbar>
         </AppBar>

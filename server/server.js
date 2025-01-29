@@ -3,23 +3,26 @@ dotenv.config();
 
 import express from 'express';
 import cors from "cors";
-import router from './routes/authRoutes.js';
-import {authenticateJWT} from './middleware/authMiddleware.js';
+import cookieParser from "cookie-parser";
+import routerReact from './routes/react.js';
+import routerAndroid from './routes/android.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
+const corsOption = {
+    origin: 'http://localhost:5173',
+    credentials: true
+}
 
-app.use(cors());
+app.use(cors(corsOption));
 app.use(express.json());
+app.use(cookieParser());
 
-app.use('/api/auth', router);
+app.use('/api/auth', routerReact);
+app.use('/api/android', routerAndroid);
 
 app.get('/', (req, res) => {
     res.json({message: 'Cashless'})
-})
-
-app.get('/api/protected', authenticateJWT, (req, res) => {
-    res.json({ message: 'You have access to this protected route', user: req.user });
 });
 
 app.listen(port, () => {

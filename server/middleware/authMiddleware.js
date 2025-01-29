@@ -13,6 +13,6 @@ export const authenticateJWT = (req, res, next) => {
         return res.status(403).json({message: 'Invalid or expired token'});
     }
 
-    req.user = decoded;
+    req.user = decoded.user;
     next();
 }

@@ -3,6 +3,7 @@ import {Navigate, Outlet, useNavigate} from "react-router";
 import {jwtDecode, JwtPayload} from "jwt-decode";
 import {decryptData} from "./CryptoLocalStorage.ts";
 import {useEffect} from "react";
+import {GetNewAccessToken} from "../services_REST/serveur/GetNewAcessToken.ts";
 
 interface CustomJwtPayload extends JwtPayload {
     exp: number;
@@ -19,12 +20,14 @@ const getTokenExpirationTime = (token: string): number | null => {
 };
 
 export const PrivateRoute = () => {
-    const {token} = useAuthenticationJWTStore();
+    const {token, setToken} = useAuthenticationJWTStore();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (token) {
+            console.log("non decrypted token: " + token)
             const decryptedToken = decryptData(token);
+            console.log("decrypted token " + decryptedToken)
             const parsedDecryptedToken = JSON.parse(decryptedToken);
             const jwtToken = parsedDecryptedToken.accessToken;
 
@@ -33,23 +36,25 @@ export const PrivateRoute = () => {
                 const currentTime = Date.now();
                 const timeUntilExpiration = expirationTime - currentTime;
 
-                if (timeUntilExpiration <= 0) {
-                    console.log("Token already expired. Redirecting...");
-                    localStorage.removeItem("token-store");
-                    navigate("/login", {replace: true});
-                    return;
-                }
                 console.log(`Token will expire in ${timeUntilExpiration}ms`);
                 const timeout = setTimeout(() => {
-                    console.log("Token expired. Redirecting to login...");
-                    localStorage.removeItem("token-store");
-                    navigate("/login", {replace: true});
+                    console.log("Access token expired. Refreshing...")
+                    GetNewAccessToken()
+                        .then((token) => {
+                            if (token != null) {
+                                console.log(token)
+                                setToken(token)
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            console.log(error.message)
+                        })
                 }, timeUntilExpiration);
                 return () => clearTimeout(timeout);
             }
         } else {
-            console.log("No token found. Redirecting to login...");
-            localStorage.removeItem("token-store");
+            console.log("No access token found. Redirecting to login page...");
             navigate("/login", {replace: true});
         }
     }, [token, navigate]);
