@@ -1,5 +1,3 @@
-// import {jwtDecode, JwtPayload} from "jwt-decode";
-// import {useAuthenticationJWTStore} from "../store/AuthenticationJWT.ts";
 import parameters from "../../public/parameters.json";
 import {Header} from "../components/Header.tsx";
 import {Footer} from "../components/Footer.tsx";
@@ -7,27 +5,6 @@ import {Box, Button, Container, Typography} from "@mui/material";
 import {useAuthenticationJWTStore} from "../store/AuthenticationJWT.ts";
 import {getDecodedToken} from "../utils/TokenDecodage.ts";
 import {AxiosJwt} from "../utils/Axios-JWT.ts";
-// import {decryptData} from "../outils/CryptoLocalStorage.ts";
-
-// interface CustomJWTPayload extends JwtPayload {
-//     id: number;
-//     username: string;
-//     role: string;
-// }
-//
-// const getUserPayload = (token:string):CustomJWTPayload | null => {
-//     try {
-//         const decryptedToken = decryptData(token);
-//         const parsedDecryptedToken = JSON.parse(decryptedToken);
-//         const jwtToken = parsedDecryptedToken.accessToken;
-//         const decoded = jwtDecode<CustomJWTPayload>(jwtToken);
-//         console.log(decoded.id, decoded.username, decoded.role);
-//         return decoded;
-//     } catch (error) {
-//         console.error("Failed to decode token: ", error);
-//         return null;
-//     }
-// }
 
 export const Profile = () => {
     const {accessToken} = useAuthenticationJWTStore()
