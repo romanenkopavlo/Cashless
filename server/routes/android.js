@@ -1,8 +1,10 @@
 import {Router} from 'express';
-import {login} from '../controllers/android.js';
+import {checkCard, login, products} from '../controllers/android.js';
 const routerAndroid = Router();
 
 routerAndroid.post('/loginAd', login)
+routerAndroid.post('/products', products)
+routerAndroid.post('/checkCard', checkCard)
 
 // routerAndroid.post('/loginUs')
 

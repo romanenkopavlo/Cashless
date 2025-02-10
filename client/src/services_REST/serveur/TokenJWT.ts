@@ -1,20 +1,17 @@
-import ModToken from "../../models/users/ModToken.ts";
-import axios, {AxiosError} from "axios";
-import parametres from "../../../public/parametres.json";
+import parameters from "../../../public/parameters.json";
+import Token from "../../models/users/Token.ts";
+import {AxiosJwt} from "../../utils/Axios-JWT.ts";
 
-const URL_SERVEUR = parametres.URL_SERVER
-const URL_AUTH = parametres.URL_AUTH
+const URL_AUTH = parameters.URL_AUTH
 
-export const TokenJWT = async(username: string, password: string): Promise<ModToken | null> => {
+export const TokenJWT = async(username: string, password: string): Promise<Token | null> => {
     try {
-        const response = await axios.post<ModToken | null>(`${URL_SERVEUR}${URL_AUTH}`, {username, password}, { withCredentials: true });
+        const axiosJWT = AxiosJwt()
+        const response = await axiosJWT.post<Token>(`${URL_AUTH}`, {username, password});
+        console.log(`response.data de requette TokenLWT ${response.data.token}`)
         return response.data
     } catch (error) {
-        if (error instanceof AxiosError) {
-            if (error.response && error.response.status === 401) {
-                throw new Error(error.response.data.message);
-            }
-        }
+        console.log(error)
         return null
     }
 }

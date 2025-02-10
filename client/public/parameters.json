@@ -2,5 +2,7 @@
   "URL_SERVER": "http://localhost:5000",
   "URL_AUTH": "/api/auth/login",
   "URL_REFRESH_TOKEN": "/api/auth/refreshToken",
-  "SECRET_KEY": "58bff059-1c03-4a3f-bff0-591c03ba3fc5"
+  "URL_CHECK_AUTH": "/api/auth/checkAuth",
+  "URL_LOGOUT": "/api/auth/logout",
+  "URL_BALANCE": "/api/auth/verifyBalance"
 }

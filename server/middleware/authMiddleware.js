@@ -1,18 +1,21 @@
-import {verifyToken} from '../utils/jwtUtil.js';
+import jwt from "jsonwebtoken";
 
 export const authenticateJWT = (req, res, next) => {
-    const token = req.headers['token'];
-
-    if (!token) {
-        return res.status(403).json({message: 'Token is required'});
+    console.log(req.headers)
+    const authHeader = req.headers['authorization'];
+    console.log("authHeader: " + authHeader);
+    console.log("dans l'authentificaiton")
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: "Accès refusé, token manquant ou invalide." });
     }
 
-    const decoded = verifyToken(token);
+    const token = authHeader.split(' ')[1];
 
-    if (!decoded) {
-        return res.status(403).json({message: 'Invalid or expired token'});
-    }
-
-    req.user = decoded.user;
-    next();
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: "Token invalide ou expiré." });
+        }
+        req.user = decoded;
+        next();
+    });
 }

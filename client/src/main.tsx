@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import {createBrowserRouter, RouterProvider} from "react-router";
@@ -7,8 +6,9 @@ import {App} from "./App.tsx";
 import {UserLogin} from "./pages/User-login.tsx";
 import {Profile} from "./pages/Profile.tsx";
 import {Signup} from "./pages/Signup.tsx";
-import {PrivateRoute} from "./outils/PrivateRoute.tsx";
 import {Logout} from "./pages/Logout.tsx";
+import PrivateRoute from "./components/PrivateRoute.tsx";
+import {BalanceCheck} from "./pages/BalanceCheck.tsx";
 
 const router = createBrowserRouter(([
     {
@@ -20,10 +20,10 @@ const router = createBrowserRouter(([
             {path: "/signup", element: <Signup/>},
             {path: "/logout", element: <Logout/>},
             {
-                path: "/profile",
                 element: <PrivateRoute/>,
                 children: [
                     {path: "/profile", element: <Profile/>},
+                    {path: "/checkBalance", element: <BalanceCheck/>}
                 ]
             }
         ]
@@ -32,7 +32,5 @@ const router = createBrowserRouter(([
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-      <RouterProvider router={router}/>
-  </React.StrictMode>
+    <RouterProvider router={router}/>
 )

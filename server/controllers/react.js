@@ -1,51 +1,91 @@
 import {generateTokens} from '../utils/jwtUtil.js';
 import User from '../models/user.js';
 import jwt from "jsonwebtoken";
+import mySqlPool from "../config/db.js";
 
 const users = [];
 
 export const login = async (req, res) => {
     const {username, password} = req.body;
+    // const data = await mySqlPool.query('SELECT * FROM users WHERE login = ? AND password = ?', username, password)
 
     if (username === "admin" && password === "Admin853!?") {
-        const user = new User(1, username, password, "admin");
+        const uuid = crypto.randomUUID();
+        const user = new User(1, uuid, username, password, "admin");
 
         const tokens = generateTokens(user);
-        user.createRefreshToken(tokens.refreshToken);
-        users.push(user)
-
-        console.log(tokens.refreshToken);
+        user.setRefreshToken(tokens.refreshToken);
+        users.push(user);
 
         res.cookie('refreshToken', tokens.refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production'
-        })
+        });
 
-        console.log(res.getHeaders());
-
-        res.json({accessToken: tokens.accessToken});
+        res.json({token: tokens.accessToken});
     } else {
         return res.status(401).json({message: 'Invalid credentials'});
     }
 }
 
+export const logout = async (req, res) => {
+    console.log("demande de logout")
+    res.clearCookie('refreshToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+    })
+    res.status(204).send()
+}
+
 export const getNewAccessToken = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
-
+    console.log("my refresh token: " + refreshToken)
     if (!refreshToken) {
         console.log(refreshToken);
-        return res.status(400).json({message: 'Refresh token is required'});
+        return res.status(504).json({message: 'Refresh token is required'});
     }
 
-    if (!users.find(user => user.refreshToken === refreshToken)) {
-        return res.status(403).json({error: 'Invalid refresh token'});
+    let user = users.find(user => user.refreshToken === refreshToken)
+
+    if (!user) {
+        return res.status(504).json({error: 'Invalid refresh token'});
     }
 
     try {
         const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+        payload.exp = payload.exp - (Date.now() / 1000);
+
         const newAccessToken = jwt.sign({id: payload.id, username: payload.username, role: payload.role}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: process.env.ACCESS_TOKEN_EXPIRATION})
-        res.json({accessToken: newAccessToken});
+        const newRefreshToken = jwt.sign({id: payload.id, uuid: payload.uuid, username: payload.username, role: payload.role}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: `${payload.exp}s`});
+
+        user.setRefreshToken(newRefreshToken);
+
+        res.cookie('refreshToken', newRefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production'
+        })
+
+        res.json({token: newAccessToken});
     } catch (error) {
-        res.status(403).json({error: 'Invalid or expired refresh token'});
+        console.error(error)
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+        })
+        res.status(504).json({error: 'Invalid or expired refresh token'});
+    }
+}
+
+export const verifyBalance = async (req, res) => {
+    console.log(req.user)
+    const {role} = req.user;
+    console.log("role: " + role);
+    console.log("here")
+
+    if (role === "admin") {
+        res.json({balance: 3000})
+    } else {
+        console.log("dans else")
+        res.status(401).json({error: 'Invalid role'});
     }
 }

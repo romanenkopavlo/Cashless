@@ -1,5 +1,5 @@
 import axios from "axios";
-import parametres from "../../../public/parametres.json";
+import parametres from "../../../public/parameters.json";
 
 const URL_SERVER = parametres.URL_SERVER;
 

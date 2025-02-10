@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DeveloperToolsToolWindowSettingsV1" lastSelectedContentNodeId="uuid-generator">
-    <developerToolsConfigurations />
+  <component name="DeveloperToolsToolWindowSettingsV1" lastSelectedContentNodeId="jwt-encoder-decoder">
+    <developerToolsConfigurations>
+      <developerToolConfiguration developerToolId="jwt-encoder-decoder" id="beddc1b7-f4e2-49e1-8fc4-a3e10d85ceb3" name="Workbench">
+        <properties>
+          <property key="headerText" type="INPUT" value="kotlin.String|U2FsdGVkX194WR0syFciPDbgth4yNR7X+6NZaAIc5TkTjgj5M7z25R0/LKg1Xc2XByhq+9BKtRnzCzMOYUGd5R/lkV13FTNzOXkoGXZUjbWPZmMeevc/PlUAedvlN+I/PL5vlbK7YyBECNVeH3BrMbRVfydhdh+zPABUDdLmrEjZtIl1ZUTrDbuPelu05plSw7nM29zAhEfqgxqgDtAksCedkhVJ7GyAd5DxZa1WKBaxp4e4LeSn82d9gypxEJzV5r/aPXpDc8SHAjctEEsWoHIIpHr/NUbjsNR5nJ0Xbz4=&quot;5IiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNjgxMDQwNTE1fQ" />
+          <property key="payloadText" type="INPUT" value="kotlin.String|p8DXyu99_K1XjwQZHiD4Y7EvrZOp12zsZdPdv5tAo8I" />
+          <property key="encodedText" type="INPUT" value="kotlin.String|U2FsdGVkX194WR0syFciPDbgth4yNR7X+6NZaAIc5TkTjgj5M7z25R0/LKg1Xc2XByhq+9BKtRnzCzMOYUGd5R/lkV13FTNzOXkoGXZUjbWPZmMeevc/PlUAedvlN+I/PL5vlbK7YyBECNVeH3BrMbRVfydhdh+zPABUDdLmrEjZtIl1ZUTrDbuPelu05plSw7nM29zAhEfqgxqgDtAksCedkhVJ7GyAd5DxZa1WKBaxp4e4LeSn82d9gypxEJzV5r/aPXpDc8SHAjctEEsWoHIIpHr/NUbjsNR5nJ0Xbz4=&quot;5IiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNjgxMDQwNTE1fQ.p8DXyu99_K1XjwQZHiD4Y7EvrZOp12zsZdPdv5tAo8I" />
+        </properties>
+      </developerToolConfiguration>
+    </developerToolsConfigurations>
+    <expandedGroupNodeIds />
   </component>
 </project>

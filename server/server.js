@@ -6,6 +6,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import routerReact from './routes/react.js';
 import routerAndroid from './routes/android.js';
+import mysqlPool from "./config/db.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -27,4 +28,10 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Lancé sur le http://localhost:${port}`);
+});
+
+mysqlPool.query('SELECT 1').then(() => {
+    console.log('MysqlPool query returning it\'s ok ');
+}).catch((err) => {
+    console.log('MysqlPool query returning ' + err);
 });

@@ -5,9 +5,9 @@ import {useEffect, useState} from "react";
 import {ServerCheckOnline} from "../../services_REST/serveur/ServerCheckOnline.ts";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useNavigate} from "react-router";
-import {useAuthenticationJWTStore} from "../../store/AuthenticationJWT.ts";
 import {ValidationConnexion} from "./ValidationConnexion.ts";
 import {TokenJWT} from "../../services_REST/serveur/TokenJWT.ts";
+import {useAuthenticationJWTStore} from "../../store/AuthenticationJWT.ts";
 
 interface FormData {
     login: string
@@ -19,14 +19,13 @@ export const Connexion = () => {
     const {register, handleSubmit, formState:{errors}} = useForm<FormData>();
     const [errorMessage, setErrorMessage] = useState<string>('');
     const navigate = useNavigate()
-    const {setToken} = useAuthenticationJWTStore()
+    const {setAccessToken} = useAuthenticationJWTStore()
 
     const onSubmit:SubmitHandler<FormData>=data => {
         TokenJWT(data.login, data.password)
             .then(token => {
                 if (token != null) {
-                    console.log(token)
-                    setToken(token)
+                    setAccessToken(token)
                     navigate('/profile');
                 }
             })
@@ -109,7 +108,6 @@ export const Connexion = () => {
                                     {message}
                                 </Typography>
                             </Box>
-
                         </Container>
                     </form>
                 </div>

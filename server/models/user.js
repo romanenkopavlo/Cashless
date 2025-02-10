@@ -1,13 +1,14 @@
 class User {
-    constructor(id, username, password, role) {
+    constructor(id, uuid, username, password, role) {
         this.id = id || null;
+        this.uuid = uuid || null;
         this.username = username || null;
         this.password = password || null;
         this.role = role || null;
         this.refreshToken = null;
     }
 
-    createRefreshToken(newRefreshToken) {
+    setRefreshToken(newRefreshToken) {
         this.refreshToken = newRefreshToken;
     }
 }
