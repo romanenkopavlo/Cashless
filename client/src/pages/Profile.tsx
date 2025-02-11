@@ -1,27 +1,17 @@
-import parameters from "../../public/parameters.json";
 import {Header} from "../components/Header.tsx";
 import {Footer} from "../components/Footer.tsx";
+import {Link} from "react-router";
 import {Box, Button, Container, Typography} from "@mui/material";
 import {useAuthenticationJWTStore} from "../store/AuthenticationJWT.ts";
 import {getDecodedToken} from "../utils/TokenDecodage.ts";
-import {AxiosJwt} from "../utils/Axios-JWT.ts";
+import {UnloadLogout} from "../utils/UnloadLogout.ts";
+import {AddCardForm} from "../components/formulaires/AddCard.tsx"
 
 export const Profile = () => {
     const {accessToken} = useAuthenticationJWTStore()
-    console.log(accessToken?.token)
     const user = getDecodedToken(accessToken?.token)
-    console.log(user)
-    const URL_BALANCE = parameters.URL_BALANCE
 
-    const handleCheckBalance = async () => {
-        try {
-            const axiosJWT = AxiosJwt()
-            const response = await axiosJWT.get(`${URL_BALANCE}`)
-            console.log("Balance: " + response.data.balance)
-        } catch (error) {
-            console.error("Erreur lors de la récupération du solde:", error);
-        }
-    }
+    UnloadLogout()
 
     return (
         <>
@@ -54,29 +44,22 @@ export const Profile = () => {
                     >
                         Role: {user?.role}
                     </Typography>
-                </Box>
-            </Container>
-            <Container maxWidth="xs" sx={{mt: 3}}>
-                <Box
-                    sx = {
-                        {
-                            p: 4,
-                            boxShadow: 16,
-                            borderRadius: 2,
-                            bgcolor: "background.paper"
-                        }
-                    }>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                        sx={{mt: 3}}
-                        onClick={handleCheckBalance}
+                    <Typography
+                        variant="subtitle1"
+                        sx={{fontWeight: 'bold', textAlign: 'left'}}
                     >
-                        Check balance
-                    </Button>
+                        Solde: {user?.balance}€
+                    </Typography>
+
+                    <Box sx={{mt: 2, textAlign: "center"}}>
+                        <Link to="/transaction-history" style={{textDecoration: "none"}}>
+                            <Button color="inherit" className="cta-button">
+                                Voir l'historique des transactions
+                            </Button>
+                        </Link>
+                    </Box>
                 </Box>
+                <AddCardForm/>
             </Container>
             <Footer/>
         </>

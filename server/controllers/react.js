@@ -11,7 +11,7 @@ export const login = async (req, res) => {
 
     if (username === "admin" && password === "Admin853!?") {
         const uuid = crypto.randomUUID();
-        const user = new User(1, uuid, username, password, "admin");
+        const user = new User(1, uuid, username, password, "admin", 853.85);
 
         const tokens = generateTokens(user);
         user.setRefreshToken(tokens.refreshToken);
