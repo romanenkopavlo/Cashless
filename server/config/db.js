@@ -4,7 +4,7 @@ const mySqlPool = mysql.createPool( {
     host: process.env.MYSQL,
     user: 'root',
     password: 'root',
-    database: 'festival'
+    database: 'festival_proto'
 })
 
 export default mySqlPool;

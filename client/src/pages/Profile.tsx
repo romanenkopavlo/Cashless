@@ -6,9 +6,11 @@ import {useAuthenticationJWTStore} from "../store/AuthenticationJWT.ts";
 import {getDecodedToken} from "../utils/TokenDecodage.ts";
 import {UnloadLogout} from "../utils/UnloadLogout.ts";
 import {AddCardForm} from "../components/formulaires/AddCard.tsx"
+import {useCardStore} from "../store/useCardStore.ts";
 
 export const Profile = () => {
     const {accessToken} = useAuthenticationJWTStore()
+    const {card} = useCardStore()
     const user = getDecodedToken(accessToken?.token)
 
     UnloadLogout()
@@ -44,12 +46,16 @@ export const Profile = () => {
                     >
                         Role: {user?.role}
                     </Typography>
-                    <Typography
-                        variant="subtitle1"
-                        sx={{fontWeight: 'bold', textAlign: 'left'}}
-                    >
-                        Solde: {user?.balance}€
-                    </Typography>
+                    {card &&
+                        <Typography
+                            sx={{fontWeight: 'bold', textAlign: 'left'}}>
+                            Numéro de la carte: {card.numero}
+                        </Typography>}
+                    {card &&
+                        <Typography
+                            sx={{fontWeight: 'bold', textAlign: 'left'}}>
+                            Solde: {card.montant}€
+                        </Typography>}
 
                     <Box sx={{mt: 2, textAlign: "center"}}>
                         <Link to="/transaction-history" style={{textDecoration: "none"}}>
@@ -59,7 +65,8 @@ export const Profile = () => {
                         </Link>
                     </Box>
                 </Box>
-                <AddCardForm/>
+                {!card?.numero && !card?.montant &&
+                    <AddCardForm/>}
             </Container>
             <Footer/>
         </>

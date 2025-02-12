@@ -7,11 +7,13 @@ const users = [];
 
 export const login = async (req, res) => {
     const {username, password} = req.body;
-    // const data = await mySqlPool.query('SELECT * FROM users WHERE login = ? AND password = ?', username, password)
+    const data = await mySqlPool.query('SELECT u.*, p.nom AS role FROM users u JOIN privileges p ON u.privileges_idprivileges = p.idprivileges WHERE u.login = ? AND u.password = ?', username, password)
+    const userDB = data[0][0]
 
-    if (username === "admin" && password === "Admin853!?") {
-        const uuid = crypto.randomUUID();
-        const user = new User(1, uuid, username, password, "admin", 853.85);
+    console.log(userDB)
+
+    if (userDB) {
+        const user = new User(userDB.idutilisateur, userDB.uuid, userDB.nom, userDB.prenom, userDB.login, userDB.password, userDB.nom);
 
         const tokens = generateTokens(user);
         user.setRefreshToken(tokens.refreshToken);
@@ -86,6 +88,19 @@ export const verifyBalance = async (req, res) => {
         res.json({balance: 3000})
     } else {
         console.log("dans else")
-        res.status(401).json({error: 'Invalid role'});
+        res.status(401).json({message: 'Invalid role'});
+    }
+}
+
+export const addCard = async (req, res) => {
+    console.log(req.body)
+    const {cardNumber} = req.body;
+    const data = await mySqlPool.query('SELECT * FROM cartes WHERE numero = ?', cardNumber)
+    console.log(data[0][0])
+    if (data[0][0]) {
+        console.log("here")
+        res.status(200).json(data[0][0]);
+    } else {
+        res.status(401).json({message: 'Carte invalide'})
     }
 }

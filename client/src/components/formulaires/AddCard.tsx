@@ -4,24 +4,25 @@ import { FaCreditCard } from "react-icons/fa";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {AddCard} from "../../services_REST/serveur/AddCard.ts";
 import {ValidationCard} from "./ValidationCard.ts";
+import {useCardStore} from "../../store/useCardStore.ts";
 
 interface FormData {
     cardNumber: number
 }
 
 export const AddCardForm = () => {
-    // const {accessToken} = useAuthenticationJWTStore();
     const {register, handleSubmit, formState:{errors}} = useForm<FormData>();
     const [errorMessage, setErrorMessage] = useState<string>('');
-
+    const {setCard} = useCardStore()
 
     const onSubmit:SubmitHandler<FormData>=data => {
         AddCard(data.cardNumber)
-            .then(cardNumber => {
-                if (cardNumber != null) {
-                    // setAccessToken(token)
-                    console.log(cardNumber)
-                    navigate('/profile');
+            .then(card => {
+                if (card != null) {
+                    setCard(card)
+                    console.log(card)
+                    console.log("Balance: " + card.montant)
+                    console.log("Number: " + card.numero)
                 }
             })
             .catch (error => {
@@ -90,6 +91,16 @@ export const AddCardForm = () => {
                         {errors.cardNumber.message}
                     </Typography>
                 </Container>}
+
+                {errorMessage && <Container maxWidth="sm" sx={{mt: 2, mb: 2}}>
+                    <Typography
+                        sx={{fontWeight: 'bold', textAlign: 'center'}}
+                        color={'error'}
+                    >
+                        {errorMessage}
+                    </Typography>
+                </Container>}
+
 
                 <Button
                     type="submit"

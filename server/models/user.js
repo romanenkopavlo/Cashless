@@ -1,11 +1,12 @@
 class User {
-    constructor(id, uuid, username, password, role, balance) {
-        this.id = id || null;
+    constructor(idutilisateur, uuid, nom, prenom, login, password, role) {
+        this.idutilisateur = idutilisateur || null;
         this.uuid = uuid || null;
-        this.username = username || null;
+        this.login = login || null;
         this.password = password || null;
+        this.nom = nom || null;
+        this.prenom = prenom || null;
         this.role = role || null;
-        this.balance = balance || null;
         this.refreshToken = null;
     }
 
