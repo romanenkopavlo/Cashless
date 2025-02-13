@@ -18,7 +18,7 @@ export const AxiosJwt = () => {
 
     instance.interceptors.request.use(
         (config) => {
-            const token= useAuthenticationJWTStore.getState().accessToken?.token
+            const token = useAuthenticationJWTStore.getState().accessToken?.token
             console.log("Token " + useAuthenticationJWTStore.getState().accessToken)
             console.log(`Token: ${token}`);
             config.headers['Authorization'] = token ? `Bearer ${token}` : '';
